@@ -11,30 +11,76 @@ library(shiny)
 library(shinythemes)
 
 ui <- fluidPage(theme = shinytheme("cerulean"),
-    selectInput("democracy", label = "Country",country),
-    plotOutput("plot_science", width = "400px"),
-    plotOutput("plot_democracy", width = "400px"),
-    dataTableOutput("table_science"),
-    dataTableOutput("table_democracy"),
-    textOutput("text_heading_science"),
-    tableOutput("science_tech_all_df"),
+                
+    titlePanel("World Value Study: Summary of Results from Question Subset"),
+    
+    selectInput(inputId = "country", label = "Country", choices=country),
+    
+#plot of average democracy and science responses based on drop down
+navlistPanel(
+tabPanel("Overview", "This project explores how sex, religious affiliation, and income influence the degree to which respondents agree with the following statements:
+
+    When a mother works for pay, the children suffer
+    When jobs are scarce, employers should give priority to [NATIONALITY] people over immigrants
+
+The data used in this analysis was generated as part of the 2017 European Value Study (EVS). The EVS is described as 'a large-scale, cross-national and longitudinal survey research program on how Europeans think about family, work, religion, politics, and society. Repeated every nine years in an increasing number of countries, the survey provides insights into the ideas, beliefs, preferences, attitudes, values, and opinions of citizens all over Europe.'"),
+tabPanel("Exploring Attitudes toward Democracy",
     textOutput("text_heading_democracy"),
-    tableOutput("democracy_all_df")
+    plotOutput("barplot_democracy", width = "400px"),
+    dataTableOutput("table_democracy"),
+    tableOutput("democracy_all_df")),
+    
+#table of average democracy and science values based on drop down
+tabPanel("Exploring Attitudes toward Science",
+    textOutput("text_heading_science"),
+    plotOutput("barplot_science", width = "400px"),
+    dataTableOutput("table_science"),
+    tableOutput("science_tech_all_df")),
    
-)
+))
 
 server <- function(input, output, session) {
 
-    dataset <- reactive({
-        get(input$democracy)
+    democracy_filtered<-reactive({
+        democracy %>%
+            filter(C_COW_ALPHA==input$country)
     })
     
-    output$plot_science <- renderPlot({
-        plot(dataset())
+    democracy_filtered_table<-reactive({
+        democracy %>%
+            filter(C_COW_ALPHA==input$country)
+        
+    })
+    
+    science_filtered<-reactive({
+        science_tech %>%
+            filter(C_COW_ALPHA==input$country)
+    })
+    
+    democracy_all_df <- democracy_all
+    
+    science_tech_all_df <- science_tech_all
+    
+    output$barplot_democracy <- renderPlot({
+        ggplot(democracy_filtered(), aes_string(x="value",y="var"))  +
+            geom_bar(stat="identity") +
+            theme_minimal()+
+            theme(axis.text.x=element_text(size=15)) +
+            theme(axis.text.y=element_text(size=15))
+        
+    })
+    
+    output$barplot_science <- renderPlot({
+        ggplot(science_filtered(), aes_string(x="value",y="var"))  +
+            geom_bar(stat="identity") +
+            theme_minimal()+
+            theme(axis.text.x=element_text(size=15))+
+            theme(axis.text.y=element_text(size=15))
+        
     })
     
     output$table_democracy  <- renderTable({
-        dataset()
+        democracy_filtered_table()
     })
     
     output$text_heading_democracy <- renderText("Democracy Topics: Mean Response Value")
@@ -51,31 +97,3 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 
 
-
-
-# Define UI for application that draws a histogram
-# ui <- fluidPage(
-#     selectInput("country",
-#                 "Please select a country",
-#                 country))
-# 
-#     # Application title
-#     titlePanel("World Value Study")
-# 
-# 
-# # Define server logic required to draw a histogram
-# server <- function(input, output) {
-# 
-#     output$distPlot <- renderPlot({
-#         # generate bins based on input$bins from ui.R
-#         x    <- faithful[, 2]
-#         bins <- seq(min(x), max(x), length.out = input$bins + 1)
-# 
-#         # draw the histogram with the specified number of bins
-#         hist(x, breaks = bins, col = 'darkgray', border = 'white')
-#     })
-# }
-# 
-# # Run the application 
-# shinyApp(ui = ui, server = server)
-# 

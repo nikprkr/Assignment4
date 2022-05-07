@@ -27,8 +27,16 @@ democracy <- data %>%
   rename("rich_buy_elections"=V228G) %>%
   rename("voters_threatened"=V228H) %>%
   rename("voters_given_choice"=V228I) %>%
-  filter(fair_vote!="NaN")
-  
+  filter(fair_vote!="NaN") %>%
+  as.data.frame() %>%
+  pivot_longer(
+    cols = "fair_vote":"voters_given_choice",
+    names_to = "var", 
+    values_to = "value"
+  )
+
+
+
 science_tech <- data %>%
   group_by(C_COW_ALPHA) %>%
   summarise_each(funs(mean(., na.rm=TRUE))) %>%
@@ -38,7 +46,12 @@ science_tech <- data %>%
   rename("depend_too_much"=V194) %>%
   rename("breaks_down_ideas"=V195) %>%
   rename("not_important_dailylife"=V196) %>%
-  rename("better_worse_off"=V197)
+  rename("better_worse_off"=V197) %>%
+  pivot_longer(
+    cols = "science_life_easier":"better_worse_off",
+    names_to = "var", 
+    values_to = "value"
+  )
 
 information <- data %>%
    group_by(C_COW_ALPHA) %>%
@@ -108,7 +121,23 @@ information_all<- rbind(c(table1,table2,table3,table4))
 
 # map over each variable - do aggregate and group by each country 
 
-country<- as.data.frame(science_tech$C_COW_ALPHA)
+country<- as.data.frame(science_tech$C_COW_ALPHA)%>%
+  distinct()
 
-
+library(tidyverse)
 install.packages("shinythemes")
+
+#filter for country
+
+democracy_filtered<-democracy %>%
+  filter(C_COW_ALPHA== "ALG") 
+
+ggplot(democracy, aes_string(x="value",y="var"))+
+  stat_summary(fun.y = sum, geom = "bar",colour="#56B4E9",fill="#56B4E9") +
+  geom_bar(stat="identity") +
+  theme_minimal()
+
+ggplot(science_tech_all_df, aes_string(x="value",y="var"))  +
+  stat_summary(fun.y = sum, geom = "bar",colour="#56B4E9",fill="#56B4E9") +
+  geom_bar(stat="identity") +
+  theme_minimal()
