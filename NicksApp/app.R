@@ -9,6 +9,7 @@
 
 library(shiny)
 library(shinythemes)
+library(plotly)
 
 ui <- fluidPage(theme = shinytheme("cerulean"),
                 
@@ -26,14 +27,14 @@ tabPanel("Overview", "This project explores how sex, religious affiliation, and 
 The data used in this analysis was generated as part of the 2017 European Value Study (EVS). The EVS is described as 'a large-scale, cross-national and longitudinal survey research program on how Europeans think about family, work, religion, politics, and society. Repeated every nine years in an increasing number of countries, the survey provides insights into the ideas, beliefs, preferences, attitudes, values, and opinions of citizens all over Europe.'"),
 tabPanel("Exploring Attitudes toward Democracy",
     textOutput("text_heading_democracy"),
-    plotOutput("barplot_democracy", width = "400px"),
+    plotlyOutput("barplot_democracy", width = "800px"),
     dataTableOutput("table_democracy"),
     tableOutput("democracy_all_df")),
     
 #table of average democracy and science values based on drop down
 tabPanel("Exploring Attitudes toward Science",
     textOutput("text_heading_science"),
-    plotOutput("barplot_science", width = "400px"),
+    plotlyOutput("barplot_science", width = "800px"),
     dataTableOutput("table_science"),
     tableOutput("science_tech_all_df")),
    
@@ -61,24 +62,27 @@ server <- function(input, output, session) {
     
     science_tech_all_df <- science_tech_all
     
-    output$barplot_democracy <- renderPlot({
-        ggplot(democracy_filtered(), aes_string(x="value",y="var"))  +
+    output$barplot_democracy <- renderPlotly ({
+        ggplotly(
+            ggplot(democracy_filtered(), aes_string(x="value",y="var"))  +
             geom_bar(stat="identity") +
             theme_minimal()+
-            theme(axis.text.x=element_text(size=15)) +
-            theme(axis.text.y=element_text(size=15))
+            theme(axis.text.x=element_text(size=10)) +
+            theme(axis.text.y=element_text(size=10)))
         
     })
     
-    output$barplot_science <- renderPlot({
-        ggplot(science_filtered(), aes_string(x="value",y="var"))  +
+    output$barplot_science <- renderPlotly({
+        ggplotly(
+            ggplot(science_filtered(), aes_string(x="value",y="var"))  +
             geom_bar(stat="identity") +
             theme_minimal()+
-            theme(axis.text.x=element_text(size=15))+
-            theme(axis.text.y=element_text(size=15))
+            theme(axis.text.x=element_text(size=10))+
+            theme(axis.text.y=element_text(size=10)))
         
     })
-    
+
+
     output$table_democracy  <- renderTable({
         democracy_filtered_table()
     })

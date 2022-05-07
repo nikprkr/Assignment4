@@ -141,3 +141,5 @@ ggplot(science_tech_all_df, aes_string(x="value",y="var"))  +
   stat_summary(fun.y = sum, geom = "bar",colour="#56B4E9",fill="#56B4E9") +
   geom_bar(stat="identity") +
   theme_minimal()
+
+sessionInfo()
