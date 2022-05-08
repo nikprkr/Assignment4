@@ -19,23 +19,28 @@ ui <- fluidPage(theme = shinytheme("cerulean"),
     
 #plot of average democracy and science responses based on drop down
 navlistPanel(
-tabPanel("Overview", "This project explores how sex, religious affiliation, and income influence the degree to which respondents agree with the following statements:
+tabPanel("Overview", "This project explores the responses to a subset of questions from the World Values Survey (WVS). The WVS is described as 'a global network of social scientists studying changing values and their impact on social and political life, led by an international team of scholars, with the WVS association and secretariat headquartered in Stockholm, Sweden.'
 
-    When a mother works for pay, the children suffer
-    When jobs are scarce, employers should give priority to [NATIONALITY] people over immigrants
+The data used in this analysis was generated as part of Wave 6 of the WVS (2010-2014) and it explores only a subset of the questions: 
 
-The data used in this analysis was generated as part of the 2017 European Value Study (EVS). The EVS is described as 'a large-scale, cross-national and longitudinal survey research program on how Europeans think about family, work, religion, politics, and society. Repeated every nine years in an increasing number of countries, the survey provides insights into the ideas, beliefs, preferences, attitudes, values, and opinions of citizens all over Europe.'"),
+-attitudes toward democracy
+-news consumption
+-attitudes toward science'
+
+         All tables and charts illustrate the mean response. See the survey questionnaire for details on the question format and scaling (https://www.worldvaluessurvey.org/imgaj/pdf.png)."),
 tabPanel("Exploring Attitudes toward Democracy",
     textOutput("text_heading_democracy"),
     plotlyOutput("barplot_democracy", width = "800px"),
-    dataTableOutput("table_democracy"),
+    tableOutput("table_democracy"),
     tableOutput("democracy_all_df")),
     
 #table of average democracy and science values based on drop down
 tabPanel("Exploring Attitudes toward Science",
-    textOutput("text_heading_science"),
+    #textOutput("text_heading_science"),
     plotlyOutput("barplot_science", width = "800px"),
-    dataTableOutput("table_science"),
+    #textOutput("text_heading_science"),
+    tableOutput("table_science"),
+    #textOutput("text_heading_science_all"),
     tableOutput("science_tech_all_df")),
    
 ))
@@ -58,9 +63,15 @@ server <- function(input, output, session) {
             filter(C_COW_ALPHA==input$country)
     })
     
-    democracy_all_df <- democracy_all
+    democracy_all_df <- reactive ({
+        democracy_all
+        
+    })
     
-    science_tech_all_df <- science_tech_all
+    science_tech_all_df <- reactive({
+        science_tech_all
+        
+    })
     
     output$barplot_democracy <- renderPlotly ({
         ggplotly(
@@ -85,20 +96,31 @@ server <- function(input, output, session) {
             theme(axis.title.y = element_blank()))
         
     })
-
+    
+    output$text_heading_democracy <- renderText("Democracy Topics: Mean Response Value (selected country)")
+    
 
     output$table_democracy  <- renderTable({
         democracy_filtered_table()
     })
     
-    output$text_heading_democracy <- renderText("Democracy Topics: Mean Response Value")
+    output$text_heading_democracy_all <- renderText("Democracy Topics: Mean Response Value (All countries)")
+    
     output$democracy_all_df  <- renderTable({
-        democracy_all_df
+        democracy_all_df()
     })
     
-    output$text_heading_science <- renderText("Science Topics: Mean Response Value")
+    output$text_heading_science_all <- renderText("Science Topics: Mean Response Value (All countries)")
+    
     output$science_tech_all_df  <- renderTable({
-        science_tech_all_df
+        science_tech_all_df()
+    })
+        
+    output$text_heading_science <- renderText("Science Topics: Mean Response Value (secelected country)")
+        
+        
+    output$table_science  <- renderTable({
+            science_filtered()    
     })
 }
 
