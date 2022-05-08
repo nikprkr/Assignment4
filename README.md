@@ -2,7 +2,7 @@
 
 ## Project Description
 
-This project explores the responses to a subset of questions from the World Values Survey (WVS). The WVS is desribed as 'a global network of social scientists studying changing values and their impact on social and political life, led by an international team of scholars, with the WVS association and secretariat headquartered in Stockholm, Sweden.'
+This project explores the responses to a subset of questions from the World Values Survey (WVS). The WVS is described as 'a global network of social scientists studying changing values and their impact on social and political life, led by an international team of scholars, with the WVS association and secretariat headquartered in Stockholm, Sweden.'
 
 The data used in this analysis was generated as part of Wave 6 of the WVS (2010-2014) and it explores only a subset of the questions: 
 
