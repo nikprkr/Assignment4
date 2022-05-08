@@ -68,7 +68,9 @@ server <- function(input, output, session) {
             geom_bar(stat="identity") +
             theme_minimal()+
             theme(axis.text.x=element_text(size=10)) +
-            theme(axis.text.y=element_text(size=10)))
+            theme(axis.text.y=element_text(size=10))+
+            theme(axis.title.x = element_blank())+
+            theme(axis.title.y = element_blank()))
         
     })
     
@@ -78,7 +80,9 @@ server <- function(input, output, session) {
             geom_bar(stat="identity") +
             theme_minimal()+
             theme(axis.text.x=element_text(size=10))+
-            theme(axis.text.y=element_text(size=10)))
+            theme(axis.text.y=element_text(size=10))+
+            theme(axis.title.x = element_blank())+
+            theme(axis.title.y = element_blank()))
         
     })
 
