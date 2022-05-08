@@ -2,12 +2,13 @@
 
 ## Project Description
 
-This project explores how sex, religious affiliation, and income influence the degree to which respondents agree with the following statements:
+This project explores the responses to a subset of questions from the World Values Survey (WVS). The WVS is desribed as 'a global network of social scientists studying changing values and their impact on social and political life, led by an international team of scholars, with the WVS association and secretariat headquartered in Stockholm, Sweden.'
 
-    When a mother works for pay, the children suffer
-    When jobs are scarce, employers should give priority to [NATIONALITY] people over immigrants
+The data used in this analysis was generated as part of Wave 6 of the WVS (2010-2014) and it explores only a subset of the questions: 
 
-The data used in this analysis was generated as part of the 2017 European Value Study (EVS). The EVS is described as "a large-scale, cross-national and longitudinal survey research program on how Europeans think about family, work, religion, politics, and society. Repeated every nine years in an increasing number of countries, the survey provides insights into the ideas, beliefs, preferences, attitudes, values, and opinions of citizens all over Europe."
+-attitudes toward democracy
+-news consumption
+-attitudes to science
 
 ## Stucture of Folders
 
