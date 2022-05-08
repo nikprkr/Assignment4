@@ -1,0 +1,13 @@
+name: NicksApp
+title: NicksApp
+username:
+account: nikprkr
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6254907
+bundleId: 5881675
+url: https://nikprkr.shinyapps.io/NicksApp/
+when: 1651944015.57965
+lastSyncTime: 1651944015.57965
+asMultiple: FALSE
+asStatic: FALSE
